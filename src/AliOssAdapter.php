@@ -67,7 +67,7 @@ class AliOssAdapter extends AbstractAdapter
     protected $bucket;
 
     protected $endPoint;
-    
+
     protected $cdnDomain;
 
     protected $ssl;
@@ -549,7 +549,7 @@ class AliOssAdapter extends AbstractAdapter
             $this->logErr(__FUNCTION__, $e);
             return false;
         }
-        
+
         if ($acl == OssClient::OSS_ACL_TYPE_PUBLIC_READ ){
             $res['visibility'] = AdapterInterface::VISIBILITY_PUBLIC;
         }else{
@@ -567,7 +567,7 @@ class AliOssAdapter extends AbstractAdapter
      */
     public function getUrl( $path )
     {
-        if (!$this->has($path)) throw new FileNotFoundException($filePath.' not found');
+        //if (!$this->has($path)) throw new FileNotFoundException($filePath.' not found');
         return ( $this->ssl ? 'https://' : 'http://' ) . ( $this->isCname ? ( $this->cdnDomain == '' ? $this->endPoint : $this->cdnDomain ) : $this->bucket . '.' . $this->endPoint ) . '/' . ltrim($path, '/');
     }
 
@@ -608,7 +608,7 @@ class AliOssAdapter extends AbstractAdapter
 
             return $result;
         }
-        
+
         $result = array_merge($result, Util::map($object, static::$resultMap), ['type' => 'file']);
 
         return $result;
