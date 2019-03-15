@@ -15,7 +15,7 @@ use League\Flysystem\Util;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use Log;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+//use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class AliOssAdapter extends AbstractAdapter
 {
