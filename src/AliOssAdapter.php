@@ -14,6 +14,7 @@ use League\Flysystem\Config;
 use League\Flysystem\Util;
 use OSS\Core\OssException;
 use OSS\OssClient;
+use Carbon\Carbon;
 use Log;
 //use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
@@ -569,6 +570,25 @@ class AliOssAdapter extends AbstractAdapter
     {
         //if (!$this->has($path)) throw new FileNotFoundException($filePath.' not found');
         return ( $this->ssl ? 'https://' : 'http://' ) . ( $this->isCname ? ( $this->cdnDomain == '' ? $this->endPoint : $this->cdnDomain ) : $this->bucket . '.' . $this->endPoint ) . '/' . ltrim($path, '/');
+    }
+
+    /**
+     * generate temporay url,
+     * Storage::temporaryUrl()
+     *
+     * @param $path
+     * @param $expiration
+     * @param array $options
+     *
+     * @return string
+     * @throws \OSS\Core\OssException
+     */
+    public function getTemporaryUrl($path, $expiration = 60, array $options = []) {
+        if($expiration instanceof Carbon){
+            $expiration = $expiration->diffInSeconds(Carbon::now());
+        }
+        $expiration = intval($expiration);
+        return $this->client->signUrl($this->bucket, $path, $expiration, OssClient::OSS_HTTP_GET, $options);
     }
 
     /**
